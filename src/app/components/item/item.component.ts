@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Item } from 'src/app/models/item';
-import { EventEmitter } from '@angular/core';
+import {ItemService } from '../../services/item.service';
+
 
 
 @Component({
@@ -14,18 +15,30 @@ export class ItemComponent implements OnInit {
   @Output() deleteItem: EventEmitter<Item> = new EventEmitter();
   @Output() toggleItem: EventEmitter<Item> = new EventEmitter();
 
-  constructor() { }
+  constructor(private itemService:ItemService) { }
 
   ngOnInit(): void {
   }
 
-  onDelete (item: Item){
-    this.deleteItem.emit(item);
+  setClasses(){
+    let classes = {
+      item: true,
+      'completed': this.item.completed
+    };
+
+    return classes;
   }
 
-  onToggle(item:Item){
+  onToggle(item: Item){
     item.completed = !item.completed;
+    /* this.itemService.toggleCompleted(item).subscribe(item => {
+      
+    }); */
     this.toggleItem.emit(item);
+  }
+
+  onDelete(item: Item){
+    this.deleteItem.emit(item);
   }
 
 }

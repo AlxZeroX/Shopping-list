@@ -1,0 +1,11 @@
+#main-container{
+    width: 750px;
+    margin: 0 auto;
+    background-color: #92a8d1;
+}
+
+@media screen and (max-width: 800px){
+    #main-container{
+        width: 100%;
+    }
+}

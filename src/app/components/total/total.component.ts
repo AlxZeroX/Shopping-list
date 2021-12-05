@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TotalComponent implements OnInit {
 
-  @Input() total:number =0;
+  @Input() total:number = 0;
   @Input() mensaje:string = '';
 
   constructor() { }
