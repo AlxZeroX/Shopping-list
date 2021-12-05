@@ -2,6 +2,7 @@
     width: 750px;
     margin: 0 auto;
     background-color: #92a8d1;
+    opacity: 0.85;
 }
 
 @media screen and (max-width: 800px){

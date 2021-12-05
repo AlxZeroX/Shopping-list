@@ -28,7 +28,7 @@ div{
     padding: 0 5px;
 }
 .completed .total{
-    color: #ddd;
+    color: rgb(251, 255, 0);
 }
 .total{
     width: 15%;
