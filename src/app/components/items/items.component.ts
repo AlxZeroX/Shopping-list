@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Item } from 'src/app/models/item';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Item } from '../../models/Item';
+import { ItemService } from '../../services/item.service';
 
 @Component({
   selector: 'app-items',
@@ -8,57 +9,60 @@ import { Item } from 'src/app/models/item';
 })
 export class ItemsComponent implements OnInit {
 
-  items: Item[] = [];
-  total: number = 0;
-
-  constructor() { }
+  items: Item[];
+  total:number = 0;
+  constructor(private itemService:ItemService) { }
 
   ngOnInit(): void {
-    this.items = [
 
+    /* this.items = [
       {
         id: 0,
-        title: 'pera',
-        price: 12.5,
-        quantity: 5,
+        title: 'manzana',
+        price: 20,
+        quantity: 4,
         completed: false
       },
-
       {
-        id: 1,
-        title: 'aguacate',
-        price: 10,
-        quantity: 3,
+        id: 0,
+        title: 'leche',
+        price: 20,
+        quantity: 4,
         completed: true
-      },
+      }
+    ];*/
 
-      {
-        id: 2,
-        title: 'Carne',
-        price: 45,
-        quantity: 2,
-        completed: true
-      },
-    ];
+    //this.items = this.itemService.getItems();
+    this.itemService.getItems().subscribe(items => {
+      this.items = items;
+      this.getTotal();
+    });
+  } 
 
+  deleteItem(item: Item){
+    this.items = this.items.filter(i => i.id != item.id);
+    this.itemService.deleteItem(item).subscribe();
     this.getTotal();
-
   }
 
-  deleteItem(item: Item) {
-    this.items = this.items.filter(x => x.id != item.id);
-    this.getTotal();
+  addItem(item:Item){
+    console.log(item);
+    this.itemService.addItem(item).subscribe(i => {
+      this.items.unshift(i);
+      this.getTotal();
+    });
   }
 
   toggleItem(item:Item){
+    this.itemService.toggleCompleted(item).subscribe(i => {})
     this.getTotal();
   }
 
-  getTotal() {
+  getTotal(){
     this.total = this.items
-      .filter(item => !item.completed)
-      .map(item => item.quantity * item.price)
-      .reduce((acc, item) => acc += item, 0);
+    .filter(item => item.completed === false)
+    .map(item => item.price * item.quantity)
+    .reduce((acc, item) => acc += item, 0);
   }
 
 
